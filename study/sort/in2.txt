@@ -1,0 +1,6 @@
+5
+umezawa 175 50
+clone 172 81
+iphone 13 1
+hudai 9999 9999
+kanban 255 25
