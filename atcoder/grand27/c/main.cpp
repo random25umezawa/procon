@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 typedef long long ll;
 
@@ -9,22 +10,32 @@ using namespace std;
 int n,m;
 string s;
 
-unordered_map<int,bool> edges[100000];
+unordered_map<int,bool> edges[200000];
 
-bool arrived[100000]{};
-
-void calc(int now, int pre, bool *loop_flag) {
-	cout << now << "," << edges[now].size() << endl;
-	if(arrived[now]) {
-		*loop_flag |= !edges[now].empty();
-		cout << "  " << edges[now].size() << " " << *loop_flag << endl;
-		return;
-	}
-	arrived[now] = true;
+void del_edge(int now) {
+	//if(edges[now].empty()) return;
+	int ab_bits = 0;
 	for(pair<int,bool> p : edges[now]) {
 		int next = p.first;
-		if(next==pre) continue;
-		calc(next,now,loop_flag);
+		if(s.at(next)=='A') ab_bits |= 0b01;
+		if(s.at(next)=='B') ab_bits |= 0b10;
+	}
+	if(ab_bits!=0b11) {
+		vector<int> q;
+		for(pair<int,bool> p : edges[now]) {
+			int next = p.first;
+		}
+		for(pair<int,bool> p : edges[now]) {
+			int next = p.first;
+			q.push_back(next);
+		}
+		for(int next : q) {
+			edges[next].erase(now);
+		}
+		edges[now].clear();
+		for(int next : q) {
+			del_edge(next);
+		}
 	}
 }
 
@@ -41,30 +52,18 @@ int main() {
 
 	//
 	for(int i = 0; i < n; i++) {
-		int ab_bits = 0;
-		for(pair<int,bool> p : edges[i]) {
-			int next = p.first;
-			if(s.at(next)=='A') ab_bits |= 0b01;
-			if(s.at(next)=='B') ab_bits |= 0b10;
-		}
-		if(ab_bits!=0b11) {
-			edges[i].clear();
-		}
+		del_edge(i);
 	}
 
 	//
 	for(int i = 0; i < n; i++) {
-		if(!arrived[i]) {
-			bool loop_flag = false;
-			calc(i,-1,&loop_flag);
-			cout << "loop_flag:" << loop_flag << endl;
-			if(loop_flag) {
-				cout << "Yes" << endl;
-				return 0;
-			}
+		if(!edges[i].empty()) {
+			cout << "Yes" << endl;
+			return 0;
 		}
 	}
 
 	cout << "No" << endl;
+
 	return 0;
 }
