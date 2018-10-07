@@ -71,8 +71,8 @@ int main() {
 
 	for(pair<int,ll> pr : mp) {
 		//cout << n << "," << pr.second << endl;
-		if(pr.second==1LL) ans *= n;
-		else ans *= combination(n-1+pr.second,pr.second);
+		//if(pr.second==1LL) ans *= n;
+		ans *= combination(n-1+pr.second,pr.second);
 		ans %= MOD;
 		//cout << ans << endl;
 	}
