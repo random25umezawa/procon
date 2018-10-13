@@ -1,0 +1,8 @@
+(defun f (n)
+	(if (< n 2)
+		(format t "Hello World~%")
+		(format t "~a~%" (+ (read) (read)))
+	)
+)
+(defun main ())
+(f (read))

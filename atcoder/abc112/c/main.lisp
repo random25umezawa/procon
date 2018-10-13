@@ -1,0 +1,56 @@
+(defun main ())
+(defparameter *n* (read))
+(print *n*)
+(defparameter *x-y-h*
+	(loop repeat *n*
+		collect ( list (read) (read) (read) )
+	)
+)
+
+(defun getd (cx cy x y)
+	(+ (abs (- cx x)) (abs (- cy y))
+)
+(defun geth (cx cy x y h)
+	(+ h (getd cx cy x y))
+)
+(defun isok (cx cy ch x y h)
+	(= h
+		(max 0 (- ch (geth cx cy x y)))
+	)
+)
+
+(defun setxyh (xyh)
+	(loop for val in xyh
+		for var in '(x y h)
+		do (setq var val)
+	)
+)
+(defmacro loopxyh (func &body body)
+	`(loop for xyh in *x-y-h*
+		do (progn
+			(setxyh xyh)
+			(,func ,@body)
+		)
+	)
+)
+
+(defun f ()
+	(dotimes (cx 101)
+		(dotimes (cy 101)
+			(let ((ch -1) (ans nil))
+				(loopxyh setq ch (geth cx cy x y))
+			)
+			(when (> ch 0)
+				(setq count 0)
+				(loopxyh
+					when (isok cx cy ch x y h)
+						(setq count (1+ count))
+				)
+			)
+			(when (= n count)
+				(format t "~a ~a ~a~%" cx cy ch)
+			)
+		)
+	)
+)
+(f)
